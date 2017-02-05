@@ -2,8 +2,8 @@
 #
 # doc_gen.sh v1.2
 # Генерация .md с описанием методов заданной схемы
-# Оригинальная версия файла: https://github.com/LeKovr/dbrpc/blob/master/doc_gen.sh
-# (c) 2016 Tender.Pro, Алексей Коврижкин, jean@tender.pro
+# Source: https://github.com/LeKovr/apitools
+# Copyright (c) 2016 Alexey Kovrizhkin ak@elfire.ru
 #
 # Use:
 # -- local docs

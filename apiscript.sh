@@ -2,12 +2,12 @@
 #
 # apiscript.sh v1.1
 # Генерация .md с описанием вызовов методов API по сценарию
-# Оригинальная версия файла: https://github.com/LeKovr/dbrpc/blob/master/doc_gen.sh
-# (c) 2017 Tender.Pro, Алексей Коврижкин, jean@tender.pro
+# Source: https://github.com/LeKovr/apitools
+# Copyright (c) 2017 Alexey Kovrizhkin ak@elfire.ru
 #
 # Use:
-# -- local docs
-# bash doc_gen.sh samples.sc > samples.md
+# 
+# bash apiscript.sh samples.sc > samples.md
 #
 
 # -------------------------------------------------------------------------------
