@@ -113,11 +113,13 @@ process() {
   # AA - из хэша результата поле .token поместить в переменную AA
   # +AA - в строке аргументов заменить строку =AA= на значение переменной AA
   # AA=BB - из массива результата взять  первый хэш и из него поле .BB поместить в переменную AA
+  # hide - не показывать результат вызова метода
 
   OIFS=$IFS
   IFS=';'
   vars=$new_key
   new_key="-"
+  hide_res=""
   for x in $vars
   do
     [[ "$DEBUG" ]] && echo "arg1: $x"
@@ -127,6 +129,8 @@ process() {
       local name=${x#+}
       args="${args/=$name=/${DATA[$name]}}"
       [[ "$DEBUG" ]] && echo ">> $name -> $args"
+    elif [[ "$x" == "hide" ]] ; then
+      hide_res=1
     else
       new_key=$x
     fi
@@ -187,7 +191,7 @@ EOF
 parse_token ${DATA[$new_key]}
 
 echo "\`\`\`"
-else
+elif [[ "$hide_res" == "" ]] ; then
 cat <<EOF
 \`\`\`json
 $result
