@@ -7,7 +7,7 @@
 #
 # Use:
 # -- local docs
-# bash doc_gen.sh  > doc_sample.md
+# bash doc_gen.sh [schema] > doc_sample.md
 #
 # -- local docs with query echo
 # DEBUG=1 bash doc_gen.sh  > doc_sample.md
@@ -46,14 +46,26 @@ describe() {
   local mtd=$1
   echo "Describe method $mtd..." >&2
 
-  def=$(echo $data | jq -r ".result | .[] | select(.code==\"$mtd\")") # "
-  anno=$(echo $def | jq -r .anno)
-  exam=$(echo $def | jq -r .sample)
+  local def=$(echo $data | jq -r ".result | .[] | select(.code==\"$mtd\")") # "
+  local anno=$(echo $def | jq -r .anno)
+  local exam=$(echo $def | jq -r .sample)
+  local age=$(echo $def | jq -r .max_age)
+
+  if [[ "$age" == "0" ]] ; then
+    age="до рестарта"
+  elif [[ "$age" == "-1" ]] ; then
+    age="нет"
+  else
+    age="$age сек"
+  fi
+
 cat <<EOF
 
 ## $mtd
 
 $anno
+
+**Кэш**: $age
 
 ### Аргументы
 
