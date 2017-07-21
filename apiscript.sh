@@ -159,7 +159,7 @@ curl -gsd "\$Q" -H "Content-type: application/json" $auth \$CALL | jq '.'
 EOF
 
     [[ "$DEBUG" ]] && echo "$resp"
-    result=$(echo "$resp" | jq '.')
+    result=$(echo "$resp" | jq -S '.')
 
   if [[ "$new_key" == *=* ]] ; then
     # забрать в массив элемент из хэша результата
