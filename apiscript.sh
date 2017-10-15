@@ -24,6 +24,7 @@ shift
 KEY=$1
 [[ "$KEY" ]] || KEY=""
 
+CONFIG=${CONFIG:-.config}
 
 # TOKEN берем из БД: select * from wsd.auth_token;
 #TOKEN=55d79928-911a-4d4e-a6f3-4e2a377fcbba
@@ -31,7 +32,7 @@ KEY=$1
 # хост сервера АПИ
 #APP_SITE="30502.zen.lan"
 
-. .config
+. $CONFIG
 
 # Непустое значение включает отладочный вывод
 DEBUG=""
@@ -77,7 +78,7 @@ parse_token() {
     exit
   }
   # TODO: base64 writes to STDERR
-  echo -n "$t2" | base64 --d 2>/dev/null | jq .
+  echo -n "$t2" | base64 --d 2>/dev/null | jq -S .
 }
 
 # -------------------------------------------------------------------------------
@@ -159,7 +160,7 @@ curl -gsd "\$Q" -H "Content-type: application/json" $auth \$CALL | jq '.'
 EOF
 
     [[ "$DEBUG" ]] && echo "$resp"
-    result=$(echo "$resp" | jq '.')
+    result=$(echo "$resp" | jq -S '.' || echo "ERROR: $resp")
 
   if [[ "$new_key" == *=* ]] ; then
     # забрать в массив элемент из хэша результата

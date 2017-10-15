@@ -21,7 +21,9 @@
 # Filter index by nsp
 NSP=$1
 
-[[ "$APP_SITE" ]] || . .config
+CONFIG=${CONFIG:-.config}
+
+[[ "$APP_SITE" ]] || . $CONFIG
 
 # name for docs
 H=http://$APP_SITE
