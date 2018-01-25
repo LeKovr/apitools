@@ -7,4 +7,6 @@ apitools - set of tools for [dbrpc](https://github.com/LeKovr/dbrpc)
 
 ## TODO
 
+* [ ] docs
+* [ ] flag 'empty response means error'
 * [ ] port apiscript on js
