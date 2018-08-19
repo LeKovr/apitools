@@ -36,6 +36,8 @@ CONFIG=${CONFIG:-.config}
 
 # Непустое значение включает отладочный вывод
 DEBUG=""
+# Непустое значение включает вывод даты 
+DATETIME=""
 
 
 # -------------------------------------------------------------------------------
@@ -78,7 +80,11 @@ parse_token() {
     exit
   }
   # TODO: base64 writes to STDERR
-  echo -n "$t2" | base64 --d 2>/dev/null | jq -S .
+  if [[ "$DATETIME" ]] ; then
+    echo -n "$t2" | base64 --d 2>/dev/null | jq -S '.exp = 0'
+  else
+    echo -n "$t2" | base64 --d 2>/dev/null | sed  's/\(".\{10\}T.\{14\}"\)/" "/g' | jq -S '.exp = 0'
+  fi
 }
 
 # -------------------------------------------------------------------------------
@@ -160,8 +166,11 @@ curl -gsd "\$Q" -H "Content-type: application/json" $auth \$CALL | jq '.'
 EOF
 
     [[ "$DEBUG" ]] && echo "$resp"
-    result=$(echo "$resp" | jq -S '.' || echo "ERROR: $resp")
-
+  if [[ "$DATETIME" ]] ; then
+    result=$(echo "$resp" | jq -S '.')
+  else 
+    result=$(echo "$resp" | sed  's/\(".\{10\}T.\{14\}"\)/" "/g' | jq -S '.')
+  fi
   if [[ "$new_key" == *=* ]] ; then
     # забрать в массив элемент из хэша результата
     # trim suffix
