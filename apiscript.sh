@@ -167,9 +167,9 @@ EOF
 
     [[ "$DEBUG" ]] && echo "$resp"
   if [[ "$DATETIME" ]] ; then
-    result=$(echo "$resp" | jq -S '.')
+    result=$(echo "$resp" | jq -S '.' || echo "ERROR: $resp")
   else 
-    result=$(echo "$resp" | sed  's/\(".\{10\}T.\{14\}"\)/" "/g' | jq -S '.')
+    result=$(echo "$resp" | sed  's/\(".\{10\}T.\{14\}"\)/" "/g' | jq -S '.'  || echo "ERROR: $resp")
   fi
   if [[ "$new_key" == *=* ]] ; then
     # забрать в массив элемент из хэша результата
