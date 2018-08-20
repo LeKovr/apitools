@@ -83,7 +83,7 @@ parse_token() {
   if [[ "$DATETIME" ]] ; then
     echo -n "$t2" | base64 --d 2>/dev/null | jq -S '.exp = 0'
   else
-    echo -n "$t2" | base64 --d 2>/dev/null | sed  's/\(".\{10\}T.\{14\}"\)/" "/g' | jq -S '.exp = 0'
+    echo -n "$t2" | base64 --d 2>/dev/null | sed  's/\(".\{10\}T.\{14\}"\)/"YYYY-MM-DD HH:MM"/g' | jq -S '.exp = 0'
   fi
 }
 
@@ -169,7 +169,7 @@ EOF
   if [[ "$DATETIME" ]] ; then
     result=$(echo "$resp" | jq -S '.' || echo "ERROR: $resp")
   else 
-    result=$(echo "$resp" | sed  's/\(".\{10\}T.\{14\}"\)/" "/g' | jq -S '.'  || echo "ERROR: $resp")
+    result=$(echo "$resp" | sed  's/\(".\{10\}T.\{14\}"\)/"YYYY-MM-DD HH:MM"/g' | jq -S '.'  || echo "ERROR: $resp")
   fi
   if [[ "$new_key" == *=* ]] ; then
     # забрать в массив элемент из хэша результата
