@@ -180,7 +180,6 @@ EOF
   else 
     result=$(echo "$resp" | sed  's/\(".\{10\}T.\{14\}"\)/"2006-01-02T15:04:05+00:00"/g' | jq -S '.'  || echo "ERROR: $resp")
   fi
-
   if [[ "$new_key" == *=* ]] ; then
     # забрать в массив элемент из хэша результата
     # trim suffix
@@ -196,7 +195,6 @@ EOF
     # забрать в массив токен
     DATA[$new_key]=$(echo $resp| jq -r '.token')
     [[ "$DEBUG" ]] && echo ">> Save key: $new_key - ${DATA[$new_key]}"
-
 cat <<EOF
 \`\`\`json
 {
