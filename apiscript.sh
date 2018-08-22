@@ -159,7 +159,7 @@ process() {
   fi
 
   local args_modif_tkn=""
-  if [[ "$DATETIME" ]] ; then
+  if [[ "$TKN" ]] ; then
     args_modif_tkn=$args
   else
     args_modif_tkn=$(echo "$args" | sed 's/\("a_token":".*"\)/"a_token":"abcdefgh-1234-1234-1234-abcdefgh1234"/g')
