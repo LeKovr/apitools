@@ -39,6 +39,8 @@ DEBUG=""
 # Непустое значение включает вывод даты
 DATETIME=""
 
+# Непустое значение включает вывод токена
+TKN=""
 
 # -------------------------------------------------------------------------------
 
@@ -156,11 +158,18 @@ process() {
     resp=$(curl -sd "$args" $auth -H "$CTYPE" $API/$method)
   fi
 
+  local args_modif_tkn=""
+  if [[ "$DATETIME" ]] ; then
+    args_modif_tkn=$args
+  else
+    args_modif_tkn=$(echo "$args" | sed 's/\("a_token":".*"\)/"a_token":"abcdefgh-1234-1234-1234-abcdefgh1234"/g')
+  fi
+
 cat <<EOF
 
 \`\`\`
 CALL=$API/$method
-Q='$args'
+Q='$args_modif_tkn'
 curl -gsd "\$Q" -H "Content-type: application/json" $auth \$CALL | jq '.'
 \`\`\`
 EOF
@@ -171,6 +180,7 @@ EOF
   else 
     result=$(echo "$resp" | sed  's/\(".\{10\}T.\{14\}"\)/"2006-01-02T15:04:05+00:00"/g' | jq -S '.'  || echo "ERROR: $resp")
   fi
+
   if [[ "$new_key" == *=* ]] ; then
     # забрать в массив элемент из хэша результата
     # trim suffix
